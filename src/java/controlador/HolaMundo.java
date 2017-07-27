@@ -19,7 +19,7 @@ import logica.Libro;
  * @author Labing I5
  */
 public class HolaMundo extends HttpServlet {
-
+ private static ConjuntoLibro libros = new ConjuntoLibro();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,11 +33,11 @@ public class HolaMundo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String clave1=request.getParameter("clave1");
-            String clave2=request.getParameter("clave2");
-            ConjuntoLibro libros = new ConjuntoLibro();
-            Libro[] listaLibros =libros.listarLibros();
+            String nombre=request.getParameter("nombre");
+            int calificacion= Integer.parseInt(request.getParameter("calificacion"));
             
+            
+            libros.registrar(new Libro(nombre,calificacion));
             
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -46,12 +46,15 @@ public class HolaMundo extends HttpServlet {
             out.println("<title>Servlet HolaMundo</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>HolaMundo " + clave1 + " " + clave2 + "</h1>");
-             
+            out.println("<h1>HolaMundo " + nombre + " " + calificacion + "</h1>");
+            
+            //Listar libros
+            Libro[] listaLibros =libros.listarLibros();
             for (int i = 0; i < listaLibros.length; i++) {
                 Libro l = listaLibros[i];
                 if(l != null)
                 out.println(l.getNombre() + " " + l.getCalificacion());
+                
             }
             
             out.println("</body>");
